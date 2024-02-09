@@ -1,0 +1,99 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: iam
+  name: iam
+  namespace: util
+spec:
+  replicas: 2
+  minReadySeconds: 200
+  template:
+    metadata:
+      labels:
+        app: iam
+    spec:
+      containers:
+        - image: gcr.io/qmit-pro/iam:latest
+          imagePullPolicy: Always
+          name: server
+          resources:
+            requests:
+              memory: 700Mi
+              cpu: 120m
+            limits:
+              memory: 850Mi
+              cpu: 150m
+          env:
+            - name: QMIT_APP_ENV
+              value: prod
+            - name: QMIT_CLUSTER_NAME
+              value: prod
+            - name: CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: iam-secrets
+                  key: CLIENT_ID
+            - name: TEAM_ID
+              valueFrom:
+                secretKeyRef:
+                  name: iam-secrets
+                  key: TEAM_ID
+            - name: KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: iam-secrets
+                  key: KEY_ID
+            - name: CALLBACK_URL
+              valueFrom:
+                secretKeyRef:
+                  name: iam-secrets
+                  key: CALLBACK_URL
+            - name: PRIVATE_KEY_STRING
+              valueFrom:
+                secretKeyRef:
+                  name: iam-secrets
+                  key: PRIVATE_KEY_STRING
+  selector:
+    matchLabels:
+      app: iam
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: iam
+  name: iam
+  namespace: util
+spec:
+  selector:
+    app: iam
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 9090
+  type: ClusterIP
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+  labels:
+    app: iam
+  name: iam
+  namespace: util
+spec:
+  rules:
+    - host: account.qmit.pro
+      http:
+        paths:
+          - backend:
+              serviceName: iam
+              servicePort: 80
+            path: /
+  tls:
+    - hosts:
+        - account.qmit.pro
+      secretName: account-qmit-pro-cert
