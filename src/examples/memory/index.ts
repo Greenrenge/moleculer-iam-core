@@ -1,7 +1,7 @@
-"use strict";
+"use strict"
 
-import { ServiceBroker } from "moleculer";
-import { IAMServiceSchema } from "../../"; // "moleculer-iam";
+import { ServiceBroker } from "moleculer"
+import { IAMServiceSchema } from "../.." // "moleculer-iam";
 
 // * dev endpoint for login: http://localhost:9090/op/auth?prompt=login&response_type=code&client_id=api-gateway&redirect_uri=https://api.dev.test.com/iam/login/callback&scope=openid
 // create moleculer service (optional)
@@ -13,7 +13,7 @@ const broker = new ServiceBroker({
     },
   },
   cacher: "Memory",
-});
+})
 
 const serviceSchema = IAMServiceSchema({
   idp: {
@@ -88,7 +88,7 @@ const serviceSchema = IAMServiceSchema({
     },
   },
   apiGatewayEndpoint: "https://api.dev.test.com",
-});
+})
 
-broker.createService(serviceSchema);
-broker.start();
+broker.createService(serviceSchema)
+broker.start()

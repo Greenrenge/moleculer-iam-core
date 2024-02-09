@@ -5,7 +5,7 @@
     "esModuleInterop": true,
     "noImplicitAny": true,
     "skipLibCheck": true,
-    "module": "commonjs",
+    "module": "esnext",
     "moduleResolution": "node",
     "pretty": true,
     "types": [
@@ -16,12 +16,24 @@
     "declaration": true,
     "strict": true,
     "baseUrl": "./",
-    "rootDir": "./src",
+    "rootDir": "src",
     "outDir": "./dist",
     "downlevelIteration": true,
-    "allowJs": true
+    "allowJs": true,
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx"
   },
   "include": [
-    "./src"
-  ],
+    "src"
+  ]
 }

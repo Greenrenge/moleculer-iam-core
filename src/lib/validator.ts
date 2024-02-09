@@ -1,9 +1,15 @@
-import Validator, { ValidationSchema, ValidationError, ValidationRule, RuleObject } from "fastest-validator";
-import PhoneNumber from "awesome-phonenumber";
+import Validator, {
+  ValidationSchema,
+  ValidationError,
+  ValidationRule,
+  RuleObject,
+} from "fastest-validator"
+import PhoneNumber from "awesome-phonenumber"
 
-export { Validator, ValidationSchema, ValidationError, ValidationRule, RuleObject };
+export { Validator }
+export type { ValidationSchema, ValidationError, ValidationRule, RuleObject }
 
-export const validator = new Validator();
+export const validator = new Validator()
 
 /*
 phoneNumber: {
@@ -12,16 +18,18 @@ phoneNumber: {
   format: "international", // default
 }
 */
-validator.messages.phone = `The {field} field must be a valid phone number format.`;
-validator.add("phone", ({ schema, messages }: any, field: any, context: any) => {
-  context.PhoneNumber = PhoneNumber; // PhoneNumber is 3rd party library
-  context.types = schema.types || ["mobile", "fixed-line-or-mobile"];
-  context.format = schema.format || "international";
-  return {
-    // value: KR|1044776418 or 1044776418 or KR|+821044776418 or +8210...
-    // when region code or the region number given, validate with region context
-    // region number will take precedence over region code
-    source: `
+validator.messages.phone = `The {field} field must be a valid phone number format.`
+validator.add(
+  "phone",
+  ({ schema, messages }: any, field: any, context: any) => {
+    context.PhoneNumber = PhoneNumber // PhoneNumber is 3rd party library
+    context.types = schema.types || ["mobile", "fixed-line-or-mobile"]
+    context.format = schema.format || "international"
+    return {
+      // value: KR|1044776418 or 1044776418 or KR|+821044776418 or +8210...
+      // when region code or the region number given, validate with region context
+      // region number will take precedence over region code
+      source: `
       if (typeof value === "string") {
         const tokens = value.trim().split("|");
         let countryCode = tokens.length > 1 ? tokens.shift() : undefined;
@@ -34,5 +42,6 @@ validator.add("phone", ({ schema, messages }: any, field: any, context: any) => 
       }
       ${validator.makeError({ type: "phone", actual: "value", messages })}
     `,
-  };
-});
+    }
+  },
+)

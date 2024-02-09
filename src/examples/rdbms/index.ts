@@ -1,8 +1,8 @@
-"use strict";
+"use strict"
 
-import { ServiceBroker } from "moleculer";
-import { app } from "./app";
-import { IAMServiceSchema } from "../../"; // "moleculer-iam";
+import { ServiceBroker } from "moleculer"
+import { app } from "./app"
+import { IAMServiceSchema } from "../.." // "moleculer-iam";
 
 // create moleculer service (optional)
 const broker = new ServiceBroker({
@@ -21,7 +21,7 @@ const broker = new ServiceBroker({
     maxDelay: 3000,
     factor: 2,
     check: (err) => {
-      return err && !!(err as any).retryable;
+      return err && !!(err as any).retryable
     },
   },
   circuitBreaker: {
@@ -31,10 +31,10 @@ const broker = new ServiceBroker({
     minRequestCount: 20,
     halfOpenTime: 10 * 1000,
     check: (err) => {
-      return err && (err as any).code && (err as any).code >= 500;
+      return err && (err as any).code && (err as any).code >= 500
     },
   },
-});
+})
 
 const serviceSchema = IAMServiceSchema({
   idp: {
@@ -150,7 +150,7 @@ const serviceSchema = IAMServiceSchema({
       port: 9090,
     },
   },
-});
+})
 
-broker.createService(serviceSchema);
-broker.start();
+broker.createService(serviceSchema)
+broker.start()
