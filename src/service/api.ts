@@ -1,12 +1,12 @@
 import fs from "fs"
 import path from "path"
 import { ServiceSchema } from "moleculer"
-// import { ServiceAPISchema } from "@greenrenge/moleculer-api"
+import { ServiceAPISchema } from "@greenrenge/moleculer-api"
 import { IdentityProvider } from "../idp"
 import { OIDCProvider } from "../op"
 
 // will publish public API only if IAM service is connected to API gateway service.
-const api = {
+const api: ServiceAPISchema = {
   branch: "master",
   protocol: {
     REST: {
