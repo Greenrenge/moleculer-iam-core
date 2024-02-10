@@ -22,7 +22,7 @@ Sequelize.useCLS(namespace)
 
 // ignore deprecation warning for string operator alias
 // tslint:disable-next-line:no-var-requires
-require("sequelize/lib/utils/deprecations").noStringOperators = () => {}
+// require("sequelize/lib/utils/deprecations").noStringOperators = () => {}
 
 // ref: https://sequelize.org/v5/manual/
 export * from "sequelize"
