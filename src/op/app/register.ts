@@ -97,7 +97,7 @@ export function buildRegisterRoutes(
 
         return ctx.op.end()
       }
-
+      //TODO: green create account from register start here
       // create account
       const { claims = {}, credentials = {}, scope = [] } = payload
 
